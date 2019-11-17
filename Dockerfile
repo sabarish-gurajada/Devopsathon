@@ -1,17 +1,18 @@
-FROM node:10
+FROM node:latest
 
-# Create app directory
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY package.json /usr/src/app
 
 RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
+COPY ./ ./
 
-# Bundle app source
-COPY . .
+ADD src /usr/src/app/src
+ADD public /usr/src/app/public
 
 EXPOSE 3000
+
+RUN npm build
+
 CMD [ "npm", "start" ]
